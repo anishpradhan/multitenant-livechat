@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat Page</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  </head>
+
+  <body>
+    
+    <div class="container-fluid" id="chat_page">
+        <div
+          class="
+            chat_page
+            w-50
+            p-3
+            mx-auto
+            my-5
+            border border-2 border-light
+            shadow
+            bg-body
+            rounded
+          "
+        >
+          <div
+            class="
+              d-block
+              position-relative
+              m-0
+              h4
+              p-2
+              text-white text-center
+            "
+            style="background-color: #4655fc;"
+          >
+            Chat: <span id="room_name"></span>
+          </div>
+          <div class="d-block h6 p-2 text-white" style="background-color: #4655fc;">
+            Support Group: <span id="support"></span>
+          </div>
+          <div class="chat">
+  
+            <div class="d-flex flex-column border border-3 w-75 overflow-auto mb-3 p-2" id="message_log" style="height: 400px;">
+  
+          </div>
+            </div>
+            <!-- <div class="d-inline bg-primary mb-3 border border-danger" style="height: 100%;">
+                <p class="mb-0"><i class="fas fa-file fa-3x position-relative" ></i></p>
+                <label for="filename">requirements.txt</label>
+            </div> -->
+            
+              <div class="attachments" id="attachments">
+                
+              </div>
+            <input
+              class="form-control w-75 mb-2 "
+              type="text"
+              id="message"
+              placeholder="Type your message..."
+            />
+            <div class="input-group mb-3 w-25">
+                <label class="input-group-text pe-auto" for="inputGroupFile01" style="cursor: pointer"><i class="fas fa-paperclip"></i></label>
+                <input type="file" name="file" class="form-control invisible" id="inputGroupFile01">
+    
+              </div>
+            <div class="button">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                id="send"
+                style="width: 70px"
+              >
+                Send
+              </button>
+              
+              <button class="btn btn-danger" id="endChat" style="width: 100px">
+                End Chat
+              </button>
+              <!-- <button class="btn btn-light" id="toast_close">Close</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+          $(document).ready(function(){
+          $('input[type="file"]').change(function(e){
+              e.preventDefault();
+              console.log(e.target);
+              var fileName = e.target.files[0].name;
+              $('#attachments').append(
+                  '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">'+
+                    '<div class="d-flex">'+
+                      '<div class="toast-body"> <p class="mb-0"><i class="far fa-file fa-3x"></i></p>'+
+                       fileName+'</div>'+
+                      '<button type="button" class="btn-close me-2 m-auto" id="toast_close" aria-label="Close"></button>'+
+                    '</div></div>'
+              );
+              $(".toast").toast("show");
+            //   var reader = new FileReader();
+            //   reader.readAsDataURL(this);
+            //   console.log(reader);
+              var formData = new FormData();
+              formData.append('file', e.target.files[0]);
+              formData.append('uploaded_by', 'Anish');
+
+              $("#send").click(function(){
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://t1.com:8000/chat/api/upload_file/',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    data: formData,
+                    success: function(data){
+                        alert(data["name"]);
+                    }
+                })
+              });
+
+          });
+
+          $(document).on('click','#toast_close', function(){
+            $('#attachments').empty();
+          });
+
+        });
+      </script>
+    <!-- <style>
+    .log {
+        height: 400px;
+        width: 500px;
+        border: 2px black solid;
+        overflow: hidden;
+        overflow-y:scroll;
+    }
+
+    li {
+        list-style-type: none;
+        background: #92cdef;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .circle {
+        height: 30px;
+        width: 30px;
+        border: 1px red solid;
+        position: absolute;
+        border-radius: 50%;
+        /*display: block;*/
+    }
+
+    #message {
+        width: 300px;
+        height: 30px;
+        border-radius: 12px;
+        margin-top: 10px;
+    }
+
+    button {
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+    }
+
+</style> -->
+    <!-- <script>
+    // WEBSOCKET
+    var room_id = '{{room.id}}';
+    var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
+    websocket_url = ws_or_wss + window.location.host
+        +'/ws/livechat/chatrooms/'+ room_id + '/';
+
+    var chatSocket =  new WebSocket(
+        websocket_url
+    );
+    chatSocket.onopen = function(e) {
+        console.log('Websocket connected.');
+        console.log(websocket_url);
+        console.log(window.location.host);
+    }
+    chatSocket.onclose=function() {
+        console.log('WebSocket disconnected.');
+        //setTimeout(function(){startWebSocket(websocket_url)}, 5000);
+    }
+
+    chatSocket.onmessage=function (e){
+        var data = JSON.parse(e.data);
+        console.log(data);
+        if (data['command'] === "new_message") {
+            $('.message_ul').append(
+                "<li> <b>" + data['message']['author'] + ":</b> " + data['message']['content'] + "</li>"
+            ).animate({scrollTop: height}, 500);
+            height += div.height();
+            console.log(message);
+        }
+        if (data['command'] === "end_chat") {
+            $('.message_ul').append(
+                "<li style='background: red'> "+ data['message'] + "</li>"
+            );
+            $('#message').attr('disabled', true);
+            $('#endChat').attr('disabled', true);
+        }
+    }
+
+
+    // END WEBSOCKET
+    var div = $('.log');
+    var height = div.height();
+    console.log(height)
+    $('#message').keyup(function (e) {
+        if (e.which === 13) {
+            $('#send').trigger('click');
+        }
+    })
+    $('#send').click(function () {
+
+        if ($.trim($('#message').val())) {
+            var message = $("#message").val();
+            chatSocket.send(JSON.stringify({
+                'command': "new_message",
+                'from': '{{user.username}}',
+                'message': message,
+                'chatId': '{{room.id}}'
+            }))
+
+            $('#message').val('');
+
+
+        }
+    })
+    $('#endChat').click(function () {
+        chatSocket.send(JSON.stringify({
+            'command': 'end_chat',
+            'left': '{{room.name}}',
+            'chatId': '{{room.id}}',
+        }))
+    })
+
+</script> -->
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Index Page</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+    <!-- <script src="index.js"></script> -->
+    <!-- <link rel="stylesheet" href="index.css"> -->
+</head>
+
+<body>
+    <div class="start_chat">
+        <form id="roomForm">
+            <p>Name: <input type="text" name="name" id="name" required /></p>
+            <p>
+                Support group:
+                <select name="support_group" id="support_group" required>
+                    <option value="" selected="">----------</option>
+                </select>
+            </p>
+            <p>
+                Question:
+                <textarea name="question" id="question" cols="30" rows="10" required></textarea>
+            </p>
+            <input type="submit" id="start" value="Start Chat" />
+        </form>
+    </div>
+    <div class="chat_page">
+        <div class="chat">
+            <h1>Chat : <span id="room_name"></span></h1>
+            <p><b>Support Group:</b> <span id="support"></span></p>
+            <div class="log">
+                <!-- {% if messages %} -->
+                <ul class="message_ul">
+
+                    <!-- {% for message in messages %} -->
+                    <!--                <div class="circle"></div>-->
+                    <!-- <li>{{message.message}}</li> -->
+                    <!-- {% endfor %} -->
+                </ul>
+                <!-- {% endif %} -->
+            </div>
+            <input type="text" id="message" placeholder="Type your message...">
+            <button type="submit" id="send">Send</button>
+            
+            <!--        <a href="{% url 'admin_end_chat' room.id %}">-->
+            <button id="endChat">End Chat</button>
+            <!--        </a>-->
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+    $(".chat_page").hide();
+    url = "http://t1.com:8000/chat/ajax/get_support_groups/";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (data) {
+            for (i = 0; i < data["support_groups"].length; i++) {
+                $("#support_group").append(
+                    "<option value=" +
+                    data["support_groups"][i] +
+                    ">" +
+                    data["support_groups"][i] +
+                    "</option>"
+                );
+            }
+        },
+    });
+});
+
+
+$("#roomForm").submit(function (e) {
+    e.preventDefault();
+    var form = $(this);
+    url = "http://t1.com:8000/chat/api/create_room/";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function (data) {
+            $(".start_chat").hide();
+            $(".chat_page").show();
+            var room_id = data['chat_id'];
+            var room_name = data['chat_name'];
+            var support_group = data['support_group'];
+            websocket(room_id, room_name, support_group);
+
+            console.log(data);
+        },
+    });
+})
+
+function websocket(room_id, room_name, support_group) {
+    // WEBSOCKET
+    // var room_id = room_id;
+    // var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
+    // websocket_url = ws_or_wss + window.location.host
+    //     + '/ws/livechat/chatrooms/' + room_id + '/';
+
+    $('#room_name').text(room_name);
+    $('#support').text(support_group);
+
+
+    websocket_url = 'ws://t1.com:8000/ws/livechat/chatrooms/' + room_id + '/';
+
+    var chatSocket = new WebSocket(
+        websocket_url
+    );
+    chatSocket.onopen = function (e) {
+        console.log('Websocket connected.');
+        console.log(websocket_url);
+    }
+    chatSocket.onclose = function () {
+        console.log('WebSocket disconnected.');
+        //setTimeout(function(){startWebSocket(websocket_url)}, 5000);
+    }
+
+    chatSocket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        console.log(data);
+        if (data['command'] === "new_message") {
+            $('.message_ul').append(
+                "<li> <b>" + data['message']['author'] + ":</b> " + data['message']['content'] + "</li>"
+            ).animate({ scrollTop: height }, 500);
+            height += div.height();
+            console.log(message);
+        }
+        if (data['command'] === "joined_chat") {
+            $('.message_ul').append(
+                "<li style='background: green'> " + data['message'] + "</li>"
+            );
+        }
+
+        if (data['command'] === "end_chat") {
+            $('.message_ul').append(
+                "<li style='background: red'> " + data['message'] + "</li>"
+            );
+            $('#message').attr('disabled', true);
+            $('#endChat').attr('disabled', true);
+            // $('#message').attr('disabled', true);
+        }
+    }
+    // END WEBSOCKET
+    var div = $('.log');
+    var height = div.height();
+    $('#message').keyup(function (e) {
+        if (e.which === 13) {
+            $('#send').trigger('click');
+        }
+    })
+    $('#send').click(function () {
+
+        if ($.trim($('#message').val())) {
+            var message = $("#message").val();
+            chatSocket.send(JSON.stringify({
+                'command': "new_message",
+                'from': room_name,
+                'message': message,
+                'chatId': room_id,
+            }))
+
+            $('#message').val('');
+
+
+        }
+    })
+
+    $('#endChat').click(function () {
+        chatSocket.send(JSON.stringify({
+            'command': 'end_chat',
+            'left': room_name,
+            'chatId': room_id,
+        }))
+    })
+
+}
+
+    </script>
+</body>
+
+</html>
