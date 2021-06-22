@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+<div class="start_chat">
+    <form method="post">
+        {% csrf_token %}
+        {{ room_form.as_p }}
+        <input type="submit" value="Start Chat">
+    </form>
+</div>
+</body>
+</html>

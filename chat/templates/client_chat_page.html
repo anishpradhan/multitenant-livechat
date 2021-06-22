@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Client Chat Page</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="chat">
+        <h1>Chat : {{room.name}}</h1>
+        <p><b>Support Group:</b> {{room.support_group.name}}</p>
+        <div class="log">
+            {% if messages %}
+            <ul class="message_ul">
+
+                {% for message in messages %}
+                <!--                <div class="circle"></div>-->
+                <li>{{message.message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <input type="text" id="message" placeholder="Type your message...">
+        <button type="submit" id="send">Send</button>
+<!--        <a href="{% url 'admin_end_chat' room.id %}">-->
+            <button id="endChat">End Chat</button>
+<!--        </a>-->
+    </div>
+</div>
+<style>
+    .log {
+        height: 400px;
+        width: 500px;
+        border: 2px black solid;
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+
+    li {
+        list-style-type: none;
+        background: #92cdef;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .circle {
+        height: 30px;
+        width: 30px;
+        border: 1px red solid;
+        position: absolute;
+        border-radius: 50%;
+        /*display: block;*/
+    }
+
+    #message {
+        width: 300px;
+        height: 30px;
+        border-radius: 12px;
+        margin-top: 10px;
+    }
+
+    button {
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+        transition: height 0.2s;
+    }
+
+    button:hover {
+        color: red;
+        cursor: pointer;
+        height: 40px;
+    }
+
+</style>
+<script>
+    // WEBSOCKET
+    var room_id = '{{room.id}}';
+    var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
+    websocket_url = ws_or_wss + window.location.host
+        + '/ws/livechat/chatrooms/' + room_id + '/';
+
+    var chatSocket = new WebSocket(
+        websocket_url
+    );
+    chatSocket.onopen = function (e) {
+        console.log('Websocket connected.');
+        console.log(websocket_url);
+        console.log(window.location.host);
+    }
+    chatSocket.onclose = function () {
+        console.log('WebSocket disconnected.');
+        //setTimeout(function(){startWebSocket(websocket_url)}, 5000);
+    }
+
+    chatSocket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        console.log(data);
+        if (data['command'] === "new_message") {
+            $('.message_ul').append(
+                "<li> <b>" + data['message']['author'] + ":</b> " + data['message']['content'] + "</li>"
+            ).animate({scrollTop: height}, 500);
+            height += div.height();
+            console.log(message);
+        }
+        if (data['command'] === "end_chat") {
+            $('.message_ul').append(
+                "<li style='background: red'> "+ data['message'] + "</li>"
+            );
+            $('#message').attr('disabled', true);
+            $('#endChat').attr('disabled', true);
+            // $('#message').attr('disabled', true);
+        }
+    }
+    // END WEBSOCKET
+    var div = $('.log');
+    var height = div.height();
+    console.log(height)
+    $('#message').keyup(function (e) {
+        if (e.which === 13) {
+            $('#send').trigger('click');
+        }
+    })
+    $('#send').click(function () {
+
+        if ($.trim($('#message').val())) {
+            var message = $("#message").val();
+            chatSocket.send(JSON.stringify({
+                'command': "new_message",
+                'from': '{{room.name}}',
+                'message': message,
+                'chatId': '{{room.id}}'
+            }))
+
+            $('#message').val('');
+
+
+        }
+    })
+
+    $('#endChat').click(function () {
+        chatSocket.send(JSON.stringify({
+            'command': 'end_chat',
+            'left': '{{room.name}}',
+            'chatId': '{{room.id}}',
+        }))
+    })
+
+</script>
+</body>
+</html>

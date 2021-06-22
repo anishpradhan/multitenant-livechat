@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Index Page</title>
+</head>
+<body>
+<div class="room_list">
+    <h1>Logged In: {{user.username}}</h1>
+    <h2>Support Group: {{support_group.name}}</h2>
+    <h1>Pending Chats:</h1>
+    <br>
+    <div class="list">
+        <ul>
+            {% for rooms in pending_rooms %}
+            <li><a href="{% url 'admin_join_chat' rooms.id%}">{{rooms.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <h1>All Chats:</h1>
+    <br>
+    <div class="all_list">
+        <ul>
+            {% for room in all_chats %}
+
+            <li>{% if not room.ended %}<a href="{% url 'chat_page' room.id%}">{{room.name}}</a>{% else %}{{room.name}}{% endif %} <span>({% if not room.ended %}Active{% else %}Ended{% endif %})</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</body>
+</html>
