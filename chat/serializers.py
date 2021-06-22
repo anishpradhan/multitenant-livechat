@@ -15,6 +15,6 @@ def serialize_file_model(m: UploadedFile):
         'id': str(m.id),
         'url': m.file.url,
         'size': m.file.size,
-        'name': os.path.basename(m.file.name),
+        'name': os.path.basename(m.get_file_name()),
         'uploaded_by': m.uploaded_by
     }

@@ -13,6 +13,7 @@ urlpatterns = [
     path('ajax/get_support_groups/', views.get_support_groups, name="get_support_groups"),
     path('api/create_room/', api.create_room, name="create_room"),
     path('api/upload_file/', api.fileUpload, name="upload_file"),
+    path('api/download_file/', api.fileDownload, name="download_file"),
 
 
     ]

@@ -138,7 +138,7 @@ class ChatConsumer(WebsocketConsumer):
                 'id': str(message.id),
                 'uploaded_by': data['uploaded_by'],
                 'file_id': str(message.file.id),
-                'file_name': message.file.get_file_name,
+                'file_name': message.file.get_file_name(),
                 'timestamp': str(message.sent)
             }
         }

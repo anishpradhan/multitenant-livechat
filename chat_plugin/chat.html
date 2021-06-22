@@ -20,7 +20,7 @@
     <div class="container" id="start_chat">
             <div class="w-50  p-4 border border-2 border-light rounded-3 mx-auto my-5 shadow bg-body rounded">
                 <h3 class="text-center">Room Form</h3>
-                <form id="roomForm">
+                <form id="roomForm" autocomplete="off">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name:</label>
                         <input type="text" class="form-control" name="name" id="name" required />
@@ -85,9 +85,9 @@
               id="message"
               placeholder="Type your message..."
             />
-            <div class="input-group mb-3 w-25">
-                <label class="input-group-text pe-auto" for="inputGroupFile01" style="cursor: pointer"><i class="fas fa-paperclip"></i></label>
-                <input type="file" name="file" class="form-control invisible" id="inputGroupFile01">
+            <div class="input-group mb-3">
+                <label class="input-group-text pe-auto" for="fileUpload" style="cursor: pointer"><i class="fas fa-paperclip"></i></label>
+                <input type="file" name="file" class="form-control invisible" id="fileUpload">
     
               </div>
             <div class="button">
@@ -107,6 +107,9 @@
         </div>
       </div>
     <script>
+
+
+
         $(document).ready(function () {
             $("#chat_page").hide();
             url = "http://t1.com:8000/chat/ajax/get_support_groups/";
@@ -132,6 +135,7 @@
 
           $(document).on('click','#toast_close', function(){
             $('#attachments').empty();
+            $('#fileUpload').val('');
           });
 
 
@@ -155,6 +159,7 @@
                 },
             });
         })
+
 
         function websocket(room_id, room_name, support_group) {
             // WEBSOCKET
@@ -189,7 +194,6 @@
                     var splitted = author.split(" ");
                     const dn = [];
                     for(i=0; i<splitted.length; i++){
-                            console.log(splitted[i][0]);
                             dn[i]=splitted[i][0];
                         }
                     var display_name = dn.slice(0,3).join("");
@@ -227,16 +231,15 @@
 
                     $('#message_log').append(
                         '<div class="p-auto w-100 m1-2 mb-2"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">'+display_name+'</div>'+
-                            '<div class="p-2 w-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;">'+data["message"]["file_name"]+'</div></div>'
+                            '<div class="p-2 w-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><i class="far fa-file fa-3x"></i>'+data["message"]["file_name"]+'</div></div>'
                         // '<i class="far fa-file fa-3x">'+data["message"]["file_name"]
                     );
                 }
             }
-
+            
 
             $('input[type="file"]').change(function(e){
               e.preventDefault();
-              console.log(e.target);
               var fileName = e.target.files[0].name;
               $('#attachments').append(
                   '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">'+
@@ -248,38 +251,9 @@
               );
               $(".toast").toast("show");
 
-              var formData = new FormData();
-              formData.append('file', e.target.files[0]);
-              formData.append('uploaded_by', room_name);
-
-              $("#send").click(function(){
-                
-                $.ajax({
-                    type: 'POST',
-                    url: 'http://t1.com:8000/chat/api/upload_file/',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    data: formData,
-                    success: function(data){
-                        chatSocket.send(JSON.stringify({
-                            'command': 'upload_file',
-                            'uploaded_by': data['uploaded_by'],
-                            'file_id': data['id'],
-                            'chatId': room_id,
-                        }))
-                        console.log($('#inputGroupFile01').val);
-                        $('#inputGroupFile01').val("");
-
-                        console.log($('#inputGroupFile01').val);    
-                        $('#attachments').empty();
-                    }
-                })
-                
-
-              });
-
           });
+
+
 
 
             // END WEBSOCKET
@@ -303,8 +277,43 @@
 
                     $('#message').val('');
 
-
                 }
+                var file_field = $('#fileUpload').prop('files')[0]
+                if(file_field){
+                    console.log('File Present');
+                    var formData = new FormData();
+                    formData.append('file', file_field);
+                    formData.append('uploaded_by', room_name);
+                    
+                    $.ajax({
+                    type: 'POST',
+                    url: 'http://t1.com:8000/chat/api/upload_file/',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    data: formData,
+                    success: function(data){
+                        chatSocket.send(JSON.stringify({
+                            'command': 'upload_file',
+                            'uploaded_by': data['uploaded_by'],
+                            'file_id': data['id'],
+                            'chatId': room_id,
+                        }))
+                        // console.log($('#inputGroupFile01').val);
+                        $('#fileUpload').val("");
+                        e = null;
+                        // console.log($('#fileUpload').val());    
+                        $('#attachments').empty();
+                    }
+                })
+                
+
+                    
+                }
+                else{
+                    console.log('Not Present');
+                }
+              
             })
 
             $('#endChat').click(function () {

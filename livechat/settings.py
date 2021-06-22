@@ -105,7 +105,7 @@ DATABASES = {
         'NAME': 'chat_support',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': '172.17.183.49',
+        'HOST': '172.29.108.40',
         'PORT': '5432',
     }
 }
