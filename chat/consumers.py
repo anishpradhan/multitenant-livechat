@@ -54,21 +54,21 @@ class ChatConsumer(WebsocketConsumer):
             self.disconnect(500)
 
     def disconnect(self, close_code):
-        current_chat = get_room(self.scope['url_route']['kwargs']['room_uuid'], self.multitenant, self.schema_name)
-        current_chat.end()
-        current_chat.save()
-        user_contact = get_user_contact(self.scope['user'], self.multitenant, self.schema_name)
-        if user_contact:
-            user = self.scope['user']
-        else:
-            user = get_room(self.room_id, self.multitenant, self.schema_name)
-            user = user.name
-        message = f'{user} left the chat. This chat has ended'
-        content = {
-            'command': 'end_chat',
-            'message': message,
-        }
-        self.send_chat_message(content)
+        # current_chat = get_room(self.scope['url_route']['kwargs']['room_uuid'], self.multitenant, self.schema_name)
+        # current_chat.end()
+        # current_chat.save()
+        # user_contact = get_user_contact(self.scope['user'], self.multitenant, self.schema_name)
+        # if user_contact:
+        #     user = self.scope['user']
+        # else:
+        #     user = get_room(self.room_id, self.multitenant, self.schema_name)
+        #     user = user.name
+        # message = f'{user} left the chat. This chat has ended'
+        # content = {
+        #     'command': 'end_chat',
+        #     'message': message,
+        # }
+        # self.send_chat_message(content)
 
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
@@ -144,12 +144,31 @@ class ChatConsumer(WebsocketConsumer):
         }
         return self.send_chat_message(content)
 
+    def is_typing(self, data):
+        content = {
+            'command': 'is_typing',
+            'message': {
+                'by': data['by'],
+            }
+        }
+        return self.send_chat_message(content)
+
+    def finished_typing(self, data):
+        content = {
+            'command': 'finished_typing',
+            'message': {
+                'by': data['by'],
+            }
+        }
+        return self.send_chat_message(content)
 
     commands = {
         # 'fetch_messages': fetch_messages,
         'upload_file': upload_file,
         'new_message': new_message,
         'end_chat': end_chat,
+        'is_typing': is_typing,
+        'finished_typing': finished_typing,
     }
 
     def messages_to_json(self, messages):

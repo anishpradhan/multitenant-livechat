@@ -2,48 +2,49 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Index Page</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <!-- <script src="index.js"></script> -->
     <!-- <link rel="stylesheet" href="index.css"> -->
 </head>
 
 <body>
-    <div class="container" id="start_chat">
-            <div class="w-50  p-4 border border-2 border-light rounded-3 mx-auto my-5 shadow bg-body rounded">
-                <h3 class="text-center">Room Form</h3>
-                <form id="roomForm" autocomplete="off">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name:</label>
-                        <input type="text" class="form-control" name="name" id="name" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="support" class="form-label">Support Group:</label>
-                        <select class="form-select" name="support_group" id="support_group" required>
-                            <option selected>---Select Support Group---</option>
-                        </select>
-                    </div>
+<div class="container" id="start_chat">
+    <div class="w-50  p-4 border border-2 border-light rounded-3 mx-auto my-5 shadow bg-body rounded">
+        <h3 class="text-center">Room Form</h3>
+        <form id="roomForm" autocomplete="off">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="name" id="name" required/>
+            </div>
+            <div class="mb-3">
+                <label for="support" class="form-label">Support Group:</label>
+                <select class="form-select" name="support_group" id="support_group" required>
+                    <option selected>---Select Support Group---</option>
+                </select>
+            </div>
 
-                    <div class="mb-3">
-                        <label for="question" class="form-label">Question:</label>
-                        <textarea class="form-control" name="question" id="question" cols="30" rows="10" required></textarea>
-                    </div>
+            <div class="mb-3">
+                <label for="question" class="form-label">Question:</label>
+                <textarea class="form-control" name="question" id="question" cols="30" rows="10" required></textarea>
+            </div>
 
-                    <input type="submit" class="btn btn-primary mb-3" id="start" value="Start Chat" />
-                </form>
-        </div>
+            <input type="submit" class="btn btn-primary mb-3" id="start" value="Start Chat"/>
+        </form>
     </div>
-    <div class="container-fluid" id="chat_page">
-        <div
-          class="
+</div>
+<div class="container-fluid" id="chat_page">
+    <div
+            class="
             chat_page
             w-50
             p-3
@@ -54,9 +55,9 @@
             bg-body
             rounded
           "
-        >
-          <div
-            class="
+    >
+        <div
+                class="
               d-block
               position-relative
               m-0
@@ -64,235 +65,365 @@
               p-2
               text-center
             "
-            >
+        >
             Chat: <span id="room_name"></span>
-          </div>
-          <div class="d-block h6 p-2">
-            Support Group: <span id="support"></span>
-          </div>
-          <div class="chat">
-  
-            <div class="d-flex flex-column border border-3 w-75 overflow-auto mb-3 p-2" id="message_log" style="height: 400px;">
-  
-          </div>
-            </div>
-            <div class="attachments" id="attachments">
-                
-            </div>
-            <input
-              class="form-control w-75 mb-2"
-              type="text"
-              id="message"
-              placeholder="Type your message..."
-            />
-            <div class="input-group mb-3">
-                <label class="input-group-text pe-auto" for="fileUpload" style="cursor: pointer"><i class="fas fa-paperclip"></i></label>
-                <input type="file" name="file" class="form-control invisible" id="fileUpload">
-    
-              </div>
-            <div class="button">
-              <button
-                class="btn btn-primary"
-                type="submit"
-                id="send"
-                style="width: 70px"
-              >
-                Send
-              </button>
-              <button class="btn btn-danger" id="endChat" style="width: 100px">
-                End Chat
-              </button>
-            </div>
-          </div>
         </div>
-      </div>
-    <script>
+        <div class="d-block h6 p-2">
+            Support Group: <span id="support"></span>
+        </div>
+        <div class="chat">
+
+            <div class="d-flex flex-column justify-content-end border border-3 w-75 overflow-auto mb-3 p-2"
+                 id="message_log"
+                 style="height: 400px;">
+
+            </div>
+        </div>
+        <div class="attachments" id="attachments">
+
+        </div>
+        <input
+                class="form-control w-75 mb-2"
+                type="text"
+                id="message"
+                placeholder="Type your message..."
+        />
+        <div class="input-group mb-3">
+            <label class="input-group-text pe-auto" for="fileUpload" style="cursor: pointer"><i
+                    class="fas fa-paperclip"></i></label>
+            <input type="file" name="file" class="form-control invisible" id="fileUpload">
+
+        </div>
+        <div class="button">
+            <button
+                    class="btn btn-primary"
+                    type="submit"
+                    id="send"
+                    style="width: 70px"
+            >
+                Send
+            </button>
+            <button class="btn btn-danger" id="endChat" style="width: 100px">
+                End Chat
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+<script>
 
 
-
-        $(document).ready(function () {
-            $("#chat_page").hide();
-            url = "http://t1.com:8000/chat/ajax/get_support_groups/";
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    for (i = 0; i < data["support_groups"].length; i++) {
-                        $("#support_group").append(
-                            "<option value=" +
-                            data["support_groups"][i] +
-                            ">" +
-                            data["support_groups"][i] +
-                            "</option>"
-                        );
-                    }
-                },
-            });
+    $(document).ready(function () {
+        $("#chat_page").hide();
+        url = "http://t1.com:8000/chat/ajax/get_support_groups/";
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                for (i = 0; i < data["support_groups"].length; i++) {
+                    $("#support_group").append(
+                        "<option value=" +
+                        data["support_groups"][i] +
+                        ">" +
+                        data["support_groups"][i] +
+                        "</option>"
+                    );
+                }
+            },
         });
+    });
 
 
-       
-
-          $(document).on('click','#toast_close', function(){
-            $('#attachments').empty();
-            $('#fileUpload').val('');
-          });
+    $(document).on('click', '#toast_close', function () {
+        $('#attachments').empty();
+        $('#fileUpload').val('');
+    });
 
 
-        $("#roomForm").submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            url = "http://t1.com:8000/chat/api/create_room/";
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function (data) {
-                    $("#start_chat").hide();
-                    $("#chat_page").show();
-                    var room_id = data['chat_id'];
-                    var room_name = data['chat_name'];
-                    var support_group = data['support_group'];
-                    websocket(room_id, room_name, support_group);
+    $("#roomForm").submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        url = "http://t1.com:8000/chat/api/create_room/";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+                $("#start_chat").hide();
+                $("#chat_page").show();
+                var room_id = data['chat_id'];
+                var room_name = data['chat_name'];
+                var support_group = data['support_group'];
+                websocket(room_id, room_name, support_group);
 
-                    console.log(data);
-                },
-            });
-        })
-
-
-        function websocket(room_id, room_name, support_group) {
-            // WEBSOCKET
-            // var room_id = room_id;
-            // var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
-            // websocket_url = ws_or_wss + window.location.host
-            //     + '/ws/livechat/chatrooms/' + room_id + '/';
-
-            $('#room_name').text(room_name);
-            $('#support').text(support_group);
-
-
-            websocket_url = 'ws://t1.com:8000/ws/livechat/chatrooms/' + room_id + '/';
-
-            var chatSocket = new WebSocket(
-                websocket_url
-            );
-            chatSocket.onopen = function (e) {
-                console.log('Websocket connected.');
-                console.log(websocket_url);
-            }
-            chatSocket.onclose = function () {
-                console.log('WebSocket disconnected.');
-                //setTimeout(function(){startWebSocket(websocket_url)}, 5000);
-            }
-
-            chatSocket.onmessage = function (e) {
-                var data = JSON.parse(e.data);
                 console.log(data);
-                if (data['command'] === "new_message") {
-                    var author = data['message']['author'];
-                    var splitted = author.split(" ");
-                    const dn = [];
-                    for(i=0; i<splitted.length; i++){
-                            dn[i]=splitted[i][0];
-                        }
-                    var display_name = dn.slice(0,3).join("");
-                    
-                    if(data['message']['author'] === room_name){
-                       
-                        $('#message_log').append(
-                            '<div class="p-auto w-100 m1-2 mb-2"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">'+display_name+'</div>'+
-                            '<div class="p-2 w-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;">'+data["message"]["content"]+'</div></div>'
-                        );
-                        $('#message_log').scrollTop($('#message_log').prop('scrollHeight'));
-                    }
-                    else{
-                        $('#message_log').append(
-                            '<div class="pauto w-100 mb-2"><div class="rounded-circle float-start bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">'+display_name+'</div>'+
-                  '<div class="p-2 w-75 ms-5 h-100 border rounded text-white" style="background-color: #7646FE; border-radius:50px;">'+data["message"]["content"]+'</div></div>'
-                        )
-                    }
-                }
-                if (data['command'] === "joined_chat") {
-                    $('.message_ul').append(
-                        "<li style='background: green'> " + data['message'] + "</li>"
-                    );
-                }
+            },
+        });
+    })
 
-                if (data['command'] === "end_chat") {
-                    $('.message_ul').append(
-                        "<li style='background: red'> " + data['message'] + "</li>"
-                    );
-                    $('#message').attr('disabled', true);
-                    $('#endChat').attr('disabled', true);
-                    // $('#message').attr('disabled', true);
+
+    function websocket(room_id, room_name, support_group) {
+        // WEBSOCKET
+        // var room_id = room_id;
+        // var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
+        // websocket_url = ws_or_wss + window.location.host
+        //     + '/ws/livechat/chatrooms/' + room_id + '/';
+
+        $('#room_name').text(room_name);
+        $('#support').text(support_group);
+
+
+        websocket_url = 'ws://t1.com:8000/ws/livechat/chatrooms/' + room_id + '/';
+
+        var chatSocket = new WebSocket(
+            websocket_url
+        );
+        chatSocket.onopen = function (e) {
+            console.log('Websocket connected.');
+            console.log(websocket_url);
+        }
+        chatSocket.onclose = function () {
+            console.log('WebSocket disconnected.');
+            //setTimeout(function(){startWebSocket(websocket_url)}, 5000);
+        }
+
+        chatSocket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            if (data['command'] === "new_message") {
+                var author = data['message']['author'];
+                var splitted = author.split(" ");
+                const dn = [];
+                for (i = 0; i < splitted.length; i++) {
+                    dn[i] = splitted[i][0];
                 }
-                if (data['command'] === "uploaded_file") {
+                var display_name = dn.slice(0, 3).join("");
+
+                if (data['message']['author'] === room_name) {
 
                     $('#message_log').append(
-                        '<div class="p-auto w-100 m1-2 mb-2"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">'+display_name+'</div>'+
-                            '<div class="p-2 w-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><i class="far fa-file fa-3x"></i>'+data["message"]["file_name"]+'</div></div>'
+                        '<div class="p-auto w-100 m1-2 mb-3 d-flex flex-row-reverse"><div class="rounded-circle bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                        '<div class="px-3 py-2 d-inline-block mw-75 me-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["content"] + '</div></div>'
+                    );
+                    $('#message_log').scrollTop($('#message_log').prop('scrollHeight'));
+                } else {
+                    $('#message_log').append(
+                        '<div class="p-auto w-100 mb-3 d-flex flex-row"><div class="rounded-circle bg-secondary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                        '<div class="px-3 py-2 d-inline-block bg-secondary mw-75 ms-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["content"] + '</div></div>'
+                    )
+                }
+            }
+            if (data['command'] === "joined_chat") {
+                $('.message_ul').append(
+                    "<li style='background: green'> " + data['message'] + "</li>"
+                );
+            }
+
+            if (data['command'] === "end_chat") {
+                $('.message_ul').append(
+                    "<li style='background: red'> " + data['message'] + "</li>"
+                );
+                $('#message').attr('disabled', true);
+                $('#endChat').attr('disabled', true);
+                // $('#message').attr('disabled', true);
+            }
+            if (data['command'] === "uploaded_file") {
+                if(data['message']['uploaded_by'] === room_name){
+                    $('#message_log').append(
+                        '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row-reverse"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                        '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
                         // '<i class="far fa-file fa-3x">'+data["message"]["file_name"]
                     );
                 }
-            }
-            
+                else{
+                    $('#message_log').append(
+                        '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                        '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
+                    )}
 
-            $('input[type="file"]').change(function(e){
-              e.preventDefault();
-              var fileName = e.target.files[0].name;
-              $('#attachments').append(
-                  '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">'+
-                    '<div class="d-flex">'+
-                      '<div class="toast-body"> <p class="mb-0"><i class="far fa-file fa-3x"></i></p>'+
-                       fileName+'</div>'+
-                      '<button type="button" class="btn-close me-2 m-auto" id="toast_close" aria-label="Close"></button>'+
-                    '</div></div>'
-              );
-              $(".toast").toast("show");
-
-          });
-
-
-
-
-            // END WEBSOCKET
-            var div = $('.log');
-            var height = div.height();
-            $('#message').keyup(function (e) {
-                if (e.which === 13) {
-                    $('#send').trigger('click');
-                }
-            })
-            $('#send').click(function () {
-
-                if ($.trim($('#message').val())) {
-                    var message = $("#message").val();
-                    chatSocket.send(JSON.stringify({
-                        'command': "new_message",
-                        'from': room_name,
-                        'message': message,
-                        'chatId': room_id,
-                    }))
-
-                    $('#message').val('');
-
-                }
-                var file_field = $('#fileUpload').prop('files')[0]
-                if(file_field){
-                    console.log('File Present');
-                    var formData = new FormData();
-                    formData.append('file', file_field);
-                    formData.append('uploaded_by', room_name);
-                    
+                $('#downloadFile').click(function () {
                     $.ajax({
+                        type: 'GET',
+                        url: 'http://t1.com:8000/chat/api/download_file/',
+                        data: {
+                            'file_id': data['message']['file_id']
+                        },
+                        xhrFields: {
+                            responseType: 'blob' // to avoid binary data being mangled on charset conversion
+                        },
+                        success: function (blob, status, xhr) {
+                            var filename = "";
+                            var disposition = xhr.getResponseHeader('Content-Disposition');
+                            if (disposition && disposition.indexOf('attachment') !== -1) {
+                                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                                var matches = filenameRegex.exec(disposition);
+                                if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                                if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                                    window.navigator.msSaveBlob(blob, filename);
+                                } else {
+                                    var URL = window.URL || window.webkitURL;
+                                    var downloadUrl = URL.createObjectURL(blob);
+
+                                    if (filename) {
+                                        // use HTML5 a[download] attribute to specify filename
+                                        var a = document.createElement("a");
+                                        // safari doesn't support this yet
+                                        if (typeof a.download === 'undefined') {
+                                            window.location.href = downloadUrl;
+                                        } else {
+                                            a.href = downloadUrl;
+                                            a.download = filename;
+                                            document.body.appendChild(a);
+                                            a.click();
+                                        }
+                                    } else {
+                                        window.location.href = downloadUrl;
+                                    }
+
+                                    setTimeout(function () {
+                                        URL.revokeObjectURL(downloadUrl);
+                                    }, 100); // cleanup
+                                }
+                            }
+                        }
+
+                    });
+                })
+
+            }
+        }
+
+
+        $('input[type="file"]').change(function (e) {
+            e.preventDefault();
+            var fileName = e.target.files[0].name;
+            $('#attachments').append(
+                '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">' +
+                '<div class="d-flex">' +
+                '<div class="toast-body"> <p class="mb-0"><i class="far fa-file fa-3x"></i></p>' +
+                fileName + '</div>' +
+                '<button type="button" class="btn-close me-2 m-auto" id="toast_close" aria-label="Close"></button>' +
+                '</div></div>'
+            );
+            $(".toast").toast("show");
+
+        });
+
+
+        // END WEBSOCKET
+        var div = $('.log');
+        var height = div.height();
+        $('#message').keyup(function (e) {
+            if (e.which === 13) {
+                $('#send').trigger('click');
+            }
+        })
+        $('#send').click(function () {
+
+            if ($.trim($('#message').val())) {
+                var message = $("#message").val();
+                chatSocket.send(JSON.stringify({
+                    'command': "new_message",
+                    'from': room_name,
+                    'message': message,
+                    'chatId': room_id,
+                }))
+
+                $('#message').val('');
+
+            }
+            // is_typing status
+            var textarea = $('#message');
+            var lastTypedTime = new Date(0);
+            var typingDelayMillis = 2000;
+
+            // function updateLastTypedTime() {
+            //     lastTypedTime = new Date();
+            // }
+            //
+            // textarea.keypress(function () {
+            //     updateLastTypedTime();
+            //
+            // })
+            // // textarea.blur(refreshTypingStatus);
+            // var press = null;
+            // press = setInterval(function refreshTypingStatus() {
+            //     if (!textarea.is(':focus') || textarea.val() === '' || new Date().getTime() - lastTypedTime.getTime() > typingDelayMillis) {
+            //         chatSocket.send(JSON.stringify({
+            //             'command': 'finished_typing',
+            //             'by': room_name,
+            //         }));
+            //         clearInterval(press);
+            //         return 0;
+            //     } else {
+            //         chatSocket.send(JSON.stringify({
+            //             'command': 'is_typing',
+            //             'by': room_name,
+            //         }));
+            //     }
+            // }, 100)
+
+            var keyTimer;
+            textarea.keyup(function () {
+                chatSocket.send(JSON.stringify({
+                    'command': 'is_typing',
+                    'by': room_name,
+                }));
+
+                if (keyTimer) {
+                    clearTimeout(keyTimer);
+                }
+                keyTimer = setTimeout(function () {
+                    chatSocket.send(JSON.stringify({
+                        'command': 'finished_typing',
+                        'by': room_name,
+                    }));
+                }, 1500);
+            })
+
+
+            // function refreshTypingStatus() {
+            //     if (!textarea.is(':focus') || textarea.val() === '' || new Date().getTime() - lastTypedTime.getTime() > typingDelayMillis) {
+            //         chatSocket.send(JSON.stringify({
+            //             'command': 'finished_typing',
+            //             'by': room_name,
+            //         }));
+            //         clearInterval(press);
+            //     } else {
+            //         chatSocket.send(JSON.stringify({
+            //             'command': 'is_typing',
+            //             'by': room_name,
+            //         }));
+            //     }
+            // }
+
+
+            // textarea.blur(function (){
+            //     clearInterval(press);
+            // });
+            // $('#message').keypress(function () {
+            //     chatSocket.send(JSON.stringify({
+            //         'command': 'is_typing',
+            //         'by': room_name,
+            //     }))
+            //
+            //
+            // })
+            var file_field = $('#fileUpload').prop('files')[0]
+            if (file_field) {
+                console.log('File Present');
+                var formData = new FormData();
+                formData.append('file', file_field);
+                formData.append('uploaded_by', room_name);
+
+                $.ajax({
                     type: 'POST',
                     url: 'http://t1.com:8000/chat/api/upload_file/',
                     contentType: false,
                     cache: false,
                     processData: false,
                     data: formData,
-                    success: function(data){
+                    success: function (data) {
                         chatSocket.send(JSON.stringify({
                             'command': 'upload_file',
                             'uploaded_by': data['uploaded_by'],
@@ -302,31 +433,29 @@
                         // console.log($('#inputGroupFile01').val);
                         $('#fileUpload').val("");
                         e = null;
-                        // console.log($('#fileUpload').val());    
+                        // console.log($('#fileUpload').val());
                         $('#attachments').empty();
                     }
                 })
-                
 
-                    
-                }
-                else{
-                    console.log('Not Present');
-                }
-              
-            })
 
-            $('#endChat').click(function () {
-                chatSocket.send(JSON.stringify({
-                    'command': 'end_chat',
-                    'left': room_name,
-                    'chatId': room_id,
-                }))
-            })
+            } else {
+                console.log('Not Present');
+            }
+        })
 
-        }
+        $('#endChat').click(function () {
+            chatSocket.send(JSON.stringify({
+                'command': 'end_chat',
+                'left': room_name,
+                'chatId': room_id,
+            }))
+            chatSocket.close();
+        });
 
-    </script>
+    }
+
+</script>
 </body>
 
 </html>
