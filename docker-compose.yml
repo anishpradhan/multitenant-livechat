@@ -1,0 +1,71 @@
+version : "3"
+
+volumes:
+  postgres_data: {}
+  storage_data: {}
+
+services:
+#  nginx:
+#    image: nginx:alpine
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./config/nginx:/etc/nginx/conf.d
+#      - ./livechat:/livechat/
+#    depends_on:
+#      - livechat
+  postgres:
+    image: postgres:13-alpine
+#    restart: "on-failure"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+
+    ports:
+       - "5432:5432"
+
+  redis:
+    image: redis:alpine
+#    restart: "on-failure"
+    command: redis-server
+    ports:
+      - "6379:6379"
+
+  livechat:
+    build:
+      context: .
+#    restart: "on-failure"
+    command: >
+      sh -c "python manage.py migrate_schemas &&
+            python manage.py runserver 0.0.0.0:8000 "
+    volumes:
+      - storage_data:/livechat/media
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=admin
+    ports:
+      - "8000:8000"
+#      - "8081:443"
+    links:
+      - postgres
+      - redis
+
+  channels:
+    build: .
+#    restart: "on-failure"
+    command: daphne -b 0.0.0.0 -p 8001 livechat.asgi:channel_layers
+    volumes:
+      - .:/livechat
+    ports:
+      - "8001:8001"
+    links:
+      - redis
+
